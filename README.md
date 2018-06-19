@@ -1,6 +1,6 @@
 # Project Recommendations Back-end
 
-> This project is intended to build a webscale backend for a pre-existing product recommendation carosel.
+> This project builds a webscale backend for a pre-existing product recommendation carosel.
 
 ## Related Projects
 
