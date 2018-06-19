@@ -1,13 +1,12 @@
-# Project Name
+# Project Recommendations Back-end
 
-> Project description
+> This project is intended to build a webscale backend for a pre-existing product recommendation carosel.
 
 ## Related Projects
 
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
+  - https://github.com/RapidRetail/productDetails
+  - https://github.com/RapidRetail/reviews-component
+  - https://github.com/RapidRetail/image-carousel
 
 ## Table of Contents
 
