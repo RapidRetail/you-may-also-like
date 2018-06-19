@@ -7,6 +7,7 @@
   - https://github.com/RapidRetail/productDetails
   - https://github.com/RapidRetail/reviews-component
   - https://github.com/RapidRetail/image-carousel
+  - https://github.com/RapidRetail/proxy-nataliestam
 
 ## Table of Contents
 
