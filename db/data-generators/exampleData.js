@@ -1,4 +1,4 @@
-
+// this is the basic data structure needed to support the front-end
 const exampleData = [{
   id: 1,
   title: 'Women Tops Shirts',

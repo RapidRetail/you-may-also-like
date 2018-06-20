@@ -7,7 +7,9 @@
     "test": "jest",
     "react-dev": "webpack -d --watch",
     "start": "nodemon server/index.js",
-    "seed-db": "node server/init.js"
+    "seed-mongo": "node server/init.js",
+    "seed-postgres": "node db/postgres/seed-products.js && node db/postgres/seed-colors.js && node db/postgres/seed-products-colors.js && node db/postgres/seed-product-relations.js",
+    "seed-cassandra": ""
   },
   "repository": {
     "type": "git",
@@ -25,12 +27,16 @@
     "cors": "^2.8.4",
     "eslint": "^4.19.1",
     "express": "^4.16.3",
+    "fs": "0.0.1-security",
     "install-peerdeps": "^1.7.0",
     "mongoose": "^5.1.4",
     "node-sass": "^4.9.0",
+    "npm": "^6.1.0",
+    "pg": "^7.4.3",
     "prop-types": "^15.6.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
+    "request": "^2.87.0",
     "styled-components": "^3.3.2"
   },
   "devDependencies": {
