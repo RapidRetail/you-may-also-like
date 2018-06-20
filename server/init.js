@@ -1,5 +1,5 @@
-const db = require('../db/index');
-const exampleData = require('../db/exampleData');
+const db = require('../db/mongo/index');
+const exampleData = require('../db/mongo/exampleData');
 
 db.RelatedItems.insertMany(exampleData, (err, docs) => {
   if (err) {

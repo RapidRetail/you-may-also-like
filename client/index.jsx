@@ -8,12 +8,12 @@ class YouMayAlsoLike extends React.Component {
     super(props);
     this.state = {
       relateditems: [],
-      productId: 51
+      productId: window.location.pathname.split('/')[2]
     };
   }
 
   componentDidMount () {
-    axios.get(`/youMayAlsoLike/${this.state.productId}`)
+    axios.get(`/product/${this.state.productId}/related`)
       .then((response) => {
         this.setState({
           relateditems: response.data
