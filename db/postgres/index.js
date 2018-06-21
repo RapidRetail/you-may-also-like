@@ -20,7 +20,19 @@ module.exports.getRelatedItems = (productId, callback) => {
     if (err) {
       callback(err);
     } else {
-      callback(null, res.rows);
+      // parse data to match what is expected by front-end
+      const data = res.rows.map(row => (
+        {
+          id: row.related_product_id,
+          title: row.title,
+          main: row.main_img,
+          hover: row.hov_img,
+          color: row.colors.split(','),
+          price: `$${row.price} USD`
+        }
+      ));
+
+      callback(null, data);
     }
 
     client.end();

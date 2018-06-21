@@ -30,20 +30,8 @@ app.get('/product/:productId/related', (req, res) => {
     if (err) {
       res.send(err);
     } else {
-      // process data to match what is expected by front-end
-      const parsedData = data.map(row => (
-        {
-          id: row.related_product_id,
-          title: row.title,
-          main: row.main_img,
-          hover: row.hov_img,
-          color: row.colors.split(','),
-          price: `$${row.price} USD`
-        }
-      ));
-
       res.header('Access-Control-Allow-Origin', '*');
-      res.status(200).send(parsedData);
+      res.status(200).send(data);
     }
   });
 });
