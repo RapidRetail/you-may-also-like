@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
-const db = require('../db/postgres/index.js');
+// const db = require('../db/postgres/index.js');
+const db = require('../db/couch-db/index.js');
 const cors = require('cors');
 
 const app = express();
