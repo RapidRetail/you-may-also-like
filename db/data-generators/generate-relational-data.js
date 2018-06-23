@@ -2,26 +2,12 @@
 // use the postgres loader files to load the csv into a db
 const fs = require('fs');
 const colorList = require('./colors.js');
+const titleWords = require('.title-words.js');
 
 const getRandomInt = (min, max) => Math.floor(Math.random() * ((max - min) + 1)) + min;
 
 // generate products
 console.log('starting products');
-
-const text = `mumblecore migas semiotics
-  shabby-chic sustainable art-party blue-bottle ugh health goth activated-charcoal
-  listicle paleo helvetica lomo scenester echo-park put-a-bird-on-it salvia
-  dreamcatcher neutra gochujang normcore helvetica XOXO chambray roof-party hoodie squid
-  porkbelly polaroid vaporware actually heirloom wayfarers beard four-dollar-toast
-  seitan cray authentic direct trade iPhone austin snackwave irony squid cliche scenester
-  next-level typewriter ethical authentic single-origin coffee meditation enamel pin 90s bespoke
-  umami selfies tattooed prism ugh chambray activated charcoal vinyl gastropub cray chillwave
-  authentic shabby chic af taiyaki vape next-level gochujang street art hammock kombucha swag
-  unicorn organic shaman humblebrag lo-fi tile bushwick gentrify live-edge XOXO umami chillwave
-  kogi freegan shoreditch etsy whatever bushwick ramps mixtape post-ironic williamsburg sartorial
-  adaptogen etsy gentrify tattooed chambray`;
-let titleWords = text.replace(/\n/g, '').replace('  ', '').split(' ');
-titleWords = titleWords.filter(word => word !== '');
 
 let csvContent = '';
 for (let i = 1; i <= 10000000; i += 1) {
