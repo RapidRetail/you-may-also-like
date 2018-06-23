@@ -42,6 +42,12 @@ const addViews = () => {
             colors: doc.colors
           });
         }`
+      },
+      stats: {
+        reduce: '_stats',
+        map: `function (doc) {
+          emit(doc.id, doc.id);
+        }`
       }
     },
     language: 'javascript'
