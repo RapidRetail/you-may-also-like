@@ -1,9 +1,12 @@
-// this file creates 3 csvs that are stored in the local data folder
-// use the postgres or cassandra loader files to load the csv into a db
+// this file creates 4 csvs that are stored in the local data folder
+// use the postgres loader files to load the csv into a db
 const fs = require('fs');
 const colorList = require('./colors.js');
 
 const getRandomInt = (min, max) => Math.floor(Math.random() * ((max - min) + 1)) + min;
+
+// generate products
+console.log('starting products');
 
 const text = `mumblecore migas semiotics
   shabby-chic sustainable art-party blue-bottle ugh health goth activated-charcoal
@@ -21,13 +24,8 @@ let titleWords = text.replace(/\n/g, '').replace('  ', '').split(' ');
 titleWords = titleWords.filter(word => word !== '');
 
 let csvContent = '';
-
-const header = ['id', 'title', 'main_img', 'hov_img', 'price', 'colors', 'related'];
-csvContent += `${header.join(',')}\r\n`;
-
 for (let i = 1; i <= 10000000; i += 1) {
   const row = [];
-  row.push(i);
 
   // create a title
   const title = [];
@@ -43,30 +41,61 @@ for (let i = 1; i <= 10000000; i += 1) {
   // get price
   row.push(getRandomInt(13, 29) * 5);
 
-  // get colors
-  const colors = [];
-  for (let j = 0; j < 4; j += 1) {
-    colors.push(`'${colorList[getRandomInt(0, colorList.length - 1)]}'`);
-  }
-
-  row.push(`"[${colors.join(',')}]"`);
-
-  // get related items
-  const related = [];
-  for (let j = 0; j < 4; j += 1) {
-    related.push(getRandomInt(1, 10000000));
-  }
-
-  row.push(`"${JSON.stringify(related)}"`);
-
   csvContent += `${row.join(',')}\r\n`;
 
   // append to file every 100000 rows
   if (i % 100000 === 0) {
-    fs.appendFileSync('db/data/allData.csv', csvContent);
+    fs.appendFileSync('db/data/products.csv', csvContent);
     csvContent = '';
     console.log(`completed ${i} products`);
   }
 }
 
-console.log('file generated');
+console.log('generated products');
+
+// generate colors
+console.log('starting colors');
+csvContent = '';
+
+for (let i = 0; i < colorList.length; i += 1) {
+  csvContent += `${colorList[i]}\r\n`;
+}
+
+fs.appendFileSync('db/data/colors.csv', csvContent);
+
+console.log('generated colors');
+
+// generate products_colors
+console.log('starting products_colors');
+csvContent = '';
+
+for (let i = 1; i <= 10000000; i += 1) {
+  for (let j = 0; j < 4; j += 1) {
+    csvContent += `${i},${getRandomInt(1, 116)}\r\n`;
+  }
+
+  if (i % 100000 === 0) {
+    fs.appendFileSync('db/data/products_colors.csv', csvContent);
+    csvContent = '';
+    console.log(`completed ${i} products`);
+  }
+}
+
+console.log('generated products_colors!');
+
+// generate product_relations
+console.log('starting product_relations');
+csvContent = '';
+for (let i = 1; i <= 10000000; i += 1) {
+  for (let j = 0; j < 4; j += 1) {
+    csvContent += `${i},${getRandomInt(1, 10000000)}\r\n`;
+  }
+
+  if (i % 100000 === 0) {
+    fs.appendFileSync('db/data/product_relations.csv', csvContent);
+    csvContent = '';
+    console.log(`completed ${i} products`);
+  }
+}
+
+console.log('generated product_relations!');

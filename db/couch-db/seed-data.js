@@ -22,7 +22,7 @@ const loadData = (callback) => {
   });
 };
 
-const addView = () => {
+const addViews = () => {
   const db = nano.use('products');
 
   const views = {
@@ -60,8 +60,8 @@ nano.db.destroy('products', () => {
   nano.db.create('products', () => {
     console.log('table created, beginning csv dump..');
     loadData(() => {
-      console.log('creating view..');
-      addView();
+      console.log('creating views..');
+      addViews();
     });
   });
 });

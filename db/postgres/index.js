@@ -14,8 +14,6 @@ module.exports.getRelatedItems = (productId, callback) => {
     GROUP BY 1,2,3,4,5;
   `;
 
-  console.log('querying...')
-  console.log(getRelatedItemsQuery)
   client.query(getRelatedItemsQuery, (err, res) => {
     if (err) {
       callback(err);

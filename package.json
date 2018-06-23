@@ -8,8 +8,8 @@
     "react-dev": "webpack -d --watch",
     "start": "nodemon server/index.js",
     "seed-mongo": "node server/init.js",
-    "seed-postgres": "node db/postgres/seed-products.js && node db/postgres/seed-colors.js && node db/postgres/seed-products-colors.js && node db/postgres/seed-product-relations.js",
-    "seed-cassandra": ""
+    "seed-postgres": "node db/data-generators/generate-relational-data.js && db/postgres/seed-products.js && node db/postgres/seed-colors.js && node db/postgres/seed-products-colors.js && node db/postgres/seed-product-relations.js",
+    "seed-couchdb": "node db/data-generators/generate-json-data.js && db/couch-db/seed-data.js"
   },
   "repository": {
     "type": "git",
