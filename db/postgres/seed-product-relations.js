@@ -18,8 +18,8 @@ client.query('DROP TABLE IF EXISTS product_relations', (err, res) => {
 const productRelationsTable = `
   CREATE TABLE product_relations (
   id SERIAL PRIMARY KEY NOT NULL,
-  product_id1 INT,
-  product_id2 INT
+  product_id1 INT NOT NULL,
+  product_id2 INT NOT NULL
 )`;
 client.query(productRelationsTable, (err, res) => {
   if (err) {
