@@ -37,4 +37,57 @@ app.get('/product/:productId/related', (req, res) => {
   });
 });
 
+// accepts /related?title=title&price=45&main_img=link&hov_img=link&color1=color&color2=color&color3=color&color4=color&related1=id&related2=id&related3=id&related4=id
+// there is probably a better way to do this
+app.post('/related', (req, res) => {
+  const item = {
+    title: req.query.title,
+    price: req.query.price,
+    main_img: req.query.main_img,
+    hov_img: req.query.hov_img,
+    colors: [req.query.color1, req.query.color2, req.query.color3, req.query.color4],
+    related: [req.query.related1, req.query.related2, req.query.related3, req.query.related4]
+  };
+
+  db.insertItem(item, (err, data) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.header('Access-Control-Allow-Origin', '*');
+      res.status(201).send(data);
+    }
+  });
+});
+
+// accepts /product/id/related?title=title&price=price
+app.put('/product/:productId/related', (req, res) => {
+  const productId = parseInt(req.params.productId, 10);
+  const updateDetails = {
+    title: req.query.title,
+    price: req.query.price
+  };
+
+  db.updateItem(productId, updateDetails, (err, data) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.header('Access-Control-Allow-Origin', '*');
+      res.status(204).send(data);
+    }
+  });
+});
+
+app.delete('/product/:productId/related', (req, res) => {
+  const productId = parseInt(req.params.productId, 10);
+
+  db.deleteItem(productId, (err, data) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.header('Access-Control-Allow-Origin', '*');
+      res.status(202).send(data);
+    }
+  });
+});
+
 app.listen(3003, () => console.log('listening on port 3003'));
