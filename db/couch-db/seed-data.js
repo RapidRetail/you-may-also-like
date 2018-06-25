@@ -46,7 +46,9 @@ const addViews = () => {
       stats: {
         reduce: '_stats',
         map: `function (doc) {
-          emit(doc.id, doc.id);
+          if (typeof doc.id === 'number') {
+            emit(doc.id, doc.id);
+          }
         }`
       }
     },
@@ -57,7 +59,7 @@ const addViews = () => {
     if (err) {
       console.log(err);
     } else {
-      console.log('index created!');
+      console.log('view created!');
     }
   });
 };
