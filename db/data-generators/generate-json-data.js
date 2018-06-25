@@ -46,7 +46,7 @@ for (let i = 1; i <= 10000000; i += 1) {
 
   // append to file every 100000 rows
   if (i % 100000 === 0) {
-    fs.appendFileSync('db/data/allDatatest.json', allData);
+    fs.appendFileSync('db/data/allData.json', allData);
     allData = '';
     console.log(`completed ${i} products`);
   }
