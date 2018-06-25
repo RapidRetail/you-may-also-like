@@ -37,16 +37,19 @@ app.get('/product/:productId/related', (req, res) => {
   });
 });
 
-// accepts /related?title=title&price=45&main_img=link&hov_img=link&color1=color&color2=color&color3=color&color4=color&related1=id&related2=id&related3=id&related4=id
-// there is probably a better way to do this
+// accepts /related?title=title&price=45&main_img=link
+//   &hov_img=link&colors=[blue,blue,blue,blue]&related=[1,2,3,4]
 app.post('/related', (req, res) => {
+  const colors = req.query.colors.substring(1, req.query.colors.length - 1).split(',');
+  const related = req.query.related.substring(1, req.query.related.length - 1).split(',').map(id => parseInt(id, 10));
+
   const item = {
     title: req.query.title,
     price: req.query.price,
     main_img: req.query.main_img,
     hov_img: req.query.hov_img,
-    colors: [req.query.color1, req.query.color2, req.query.color3, req.query.color4],
-    related: [req.query.related1, req.query.related2, req.query.related3, req.query.related4]
+    colors,
+    related
   };
 
   db.insertItem(item, (err, data) => {
