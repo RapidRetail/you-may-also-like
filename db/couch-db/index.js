@@ -9,17 +9,18 @@ const getProduct = (id, callback) => {
   };
 
   products.view('productDesign', 'getProduct', params, (err, body) => {
-    if (!err) {
-      body.rows.forEach((doc) => {
-        callback(doc.value);
-      });
+    if (err) {
+      callback(err);
+    } else {
+      callback(null, body.rows[0]);
     }
   });
 };
 
 const getRelated = (ids, callback) => {
   const params = {
-    keys: ids
+    keys: ids,
+    include_docs: false
   };
 
   products.view('productDesign', 'getRelated', params, (err, body) => {
@@ -45,7 +46,79 @@ const getRelated = (ids, callback) => {
 };
 
 module.exports.getRelatedItems = (id, callback) => {
-  getProduct(id, (items) => {
-    getRelated(items, callback);
+  getProduct(id, (err, doc) => {
+    if (err) {
+      callback(err);
+    } else {
+      getRelated(doc.value, (err, items) => {
+        if (err) {
+          callback(err);
+        } else {
+          callback(null, items);
+        }
+      });
+    }
   });
 };
+
+module.exports.insertItem = (item, callback) => {
+  products.view('productDesign', 'stats', (err, body) => {
+    if (err) {
+      callback(err);
+    } else {
+      const insertId = body.rows[0].value.max + 1;
+      item.id = insertId;
+
+      products.insert(item, (insertErr, insertBody) => {
+        if (err) {
+          callback(err);
+        } else {
+          callback(null, insertBody);
+        }
+      });
+    }
+  });
+};
+
+module.exports.updateItem = (id, details, callback) => {
+  getProduct(id, (err, doc) => {
+    if (err) {
+      callback(err);
+    } else {
+      const updatedDoc = doc.doc;
+
+      updatedDoc.title = details.title;
+      updatedDoc.price = details.price;
+
+      products.insert(updatedDoc, (err, body) => {
+        if (err) {
+          callback(err);
+        } else {
+          callback(null, err);
+        }
+      });
+    }
+  });
+};
+
+module.exports.deleteItem = (id, callback) => {
+  // got a reason that is beyond me, this function throw an error,
+  // but still successfully deletes the doc ??
+  getProduct(id, (err, doc) => {
+    if (err) {
+      callback(err);
+    } else {
+      console.log('deleting this document:')
+      console.log(doc);
+
+      products.destroy(doc.doc._id, doc.doc._rev, (err, body) => {
+        if (err) {
+          callback(err);
+        } else {
+          callback(body);
+        }
+      });
+    }
+  });
+};
+
