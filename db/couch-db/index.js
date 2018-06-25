@@ -102,15 +102,10 @@ module.exports.updateItem = (id, details, callback) => {
 };
 
 module.exports.deleteItem = (id, callback) => {
-  // got a reason that is beyond me, this function throw an error,
-  // but still successfully deletes the doc ??
   getProduct(id, (err, doc) => {
     if (err) {
       callback(err);
     } else {
-      console.log('deleting this document:')
-      console.log(doc);
-
       products.destroy(doc.doc._id, doc.doc._rev, (err, body) => {
         if (err) {
           callback(err);
