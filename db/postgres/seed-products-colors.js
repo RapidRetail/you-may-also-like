@@ -18,8 +18,8 @@ client.query('DROP TABLE IF EXISTS products_colors', (err, res) => {
 const productsColorsTable = `
   CREATE TABLE products_colors (
   id SERIAL PRIMARY KEY NOT NULL,
-  product_id INT,
-  color_id INT
+  product_id INT NOT NULL,
+  color_id INT NOT NULL
 )`;
 client.query(productsColorsTable, (err, res) => {
   if (err) {

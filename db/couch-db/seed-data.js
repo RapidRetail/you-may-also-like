@@ -42,6 +42,14 @@ const addViews = () => {
             colors: doc.colors
           });
         }`
+      },
+      stats: {
+        reduce: '_stats',
+        map: `function (doc) {
+          if (typeof doc.id === 'number') {
+            emit(doc.id, doc.id);
+          }
+        }`
       }
     },
     language: 'javascript'
@@ -51,7 +59,7 @@ const addViews = () => {
     if (err) {
       console.log(err);
     } else {
-      console.log('index created!');
+      console.log('view created!');
     }
   });
 };
