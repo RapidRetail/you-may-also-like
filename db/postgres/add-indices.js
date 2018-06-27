@@ -25,6 +25,27 @@ const productRelationsIndex = `
   CREATE INDEX ON product_relations (product_id1);
 `;
 
+const createMaterializedView = `
+  CREATE MATERIALIZED VIEW related_products as
+    SELECT 
+        pr.product_id1 as product_id,
+        p2.id as related_product_id, 
+        p2.title,
+        p2.main_img, 
+        p2.hov_img, 
+        p2.price, 
+        string_agg(c.name,',') as colors
+    FROM product_relations pr
+    JOIN products p2 ON p2.id = pr.product_id2
+    JOIN products_colors pc ON p2.id = pc.product_id
+    JOIN colors c ON c.id = pc.color_id
+    GROUP BY 1,2,3,4,5
+;`;
+
+const relatedProductsIndex = `
+  CREATE INDEX ON related_products (product_id);
+`;
+
 console.log('adding products_colors foreign key constraint..');
 client.query(productColorsKeyConstraint, (err, res) => {
   if (err) {
@@ -49,7 +70,23 @@ client.query(productColorsKeyConstraint, (err, res) => {
                 console.log('failed to add product_relations index', err);
               } else {
                 console.log('added product_relations index!');
-                client.end();
+                console.log('adding materialized view..')
+                client.query(createMaterializedView, (err, res) => {
+                  if (err) {
+                    console.log('filed to created materialized view', err);
+                  } else {
+                    console.log('created materialized view!');
+                    console.log('adding index on materialized view..');
+                    client.query(relatedProductsIndex, (err, res) => {
+                      if (err) {
+                        console.log('failed to create index on materialized view');
+                      } else {
+                        console.log('created index on materialized view!');
+                        client.end();
+                      }
+                    });
+                  }
+                });
               }
             });
           }
