@@ -53,6 +53,7 @@
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-airbnb-standard": "^1.6.6",
     "jest": "^23.1.0",
+    "newrelic": "^4.2.0",
     "react-dev": "0.0.1",
     "regenerator-runtime": "^0.11.1",
     "sass-loader": "^7.0.3",

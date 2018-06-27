@@ -4,3 +4,5 @@
 
 db/images
 db/data
+
+newrelic_agent.log
