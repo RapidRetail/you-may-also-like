@@ -6,39 +6,50 @@ client.connect();
 const getRandomInt = (min, max) => Math.floor(Math.random() * ((max - min) + 1)) + min;
 
 module.exports.getRelatedItems = (productId, callback) => {
-  // const getRelatedItemsQuery = `
-  //   SELECT p2.id as related_product_id, p2.title, p2.main_img, p2.hov_img, p2.price, string_agg(c.name,',') as colors
-  //   FROM product_relations pr
-  //   JOIN products p2 ON p2.id = pr.product_id2
-  //   JOIN products_colors pc ON p2.id = pc.product_id 
-  //   JOIN colors c ON c.id = pc.color_id
-  //   WHERE pr.product_id1 = ${productId}
-  //   GROUP BY 1,2,3,4,5;
-  // `;
-
   const getRelatedItemsQuery = `
+    SELECT p2.id as related_product_id, p2.title, p2.main_img, p2.hov_img, p2.price, string_agg(c.name,',') as colors
+    FROM product_relations pr
+    JOIN products p2 ON p2.id = pr.product_id2
+    JOIN products_colors pc ON p2.id = pc.product_id 
+    JOIN colors c ON c.id = pc.color_id
+    WHERE pr.product_id1 = ${productId}
+    GROUP BY 1,2,3,4,5;
+  `;
+
+  const getRelatedItemsMatViewQuery = `
     SELECT *
     FROM related_products 
     WHERE product_id = ${productId}
   ;`;
 
-  client.query(getRelatedItemsQuery, (err, res) => {
+  const sendData = (res) => {
+    const data = res.rows.map(row => (
+      {
+        id: row.related_product_id,
+        title: row.title,
+        main: row.main_img,
+        hover: row.hov_img,
+        color: row.colors.split(','),
+        price: `$${row.price} USD`
+      }
+    ));
+
+    callback(null, data);
+  };
+
+  client.query(getRelatedItemsMatViewQuery, (err, res) => {
     if (err) {
       callback(err);
-    } else {
-      // parse data to match what is expected by front-end
-      const data = res.rows.map(row => (
-        {
-          id: row.related_product_id,
-          title: row.title,
-          main: row.main_img,
-          hover: row.hov_img,
-          color: row.colors.split(','),
-          price: `$${row.price} USD`
+    } else if (res.rows.length === 0) {
+      client.query(getRelatedItemsQuery, (err, res) => {
+        if (err) {
+          callback(err);
+        } else {
+          sendData(res);
         }
-      ));
-
-      callback(null, data);
+      });
+    } else {
+      sendData(res);
     }
   });
 };

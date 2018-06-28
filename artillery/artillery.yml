@@ -1,0 +1,32 @@
+config:
+  target: "http://localhost:3003"
+  phases:
+    - duration: 10
+      arrivalRate: 500
+      name: "normal"
+  processor: "./artillery-data.js"
+
+scenarios:
+  # - name: "Load products"
+  #   flow:
+  #     - loop:
+  #       - function: "generateRandomId"
+  #       - get:
+  #           url: "/product/{{ id }}/related"
+  #       count: 50
+
+  - name: "Create product"
+    flow:
+      - loop:
+        - post:
+            url: "/product"
+            json:
+              title: "some hipster title"
+              price: 45
+              hov_img: "an s3 image"
+              main_img: "another s3 image"
+              colors: ["red","blue","green","orange"]
+              related: [1,2,3,4]
+
+        count: 10
+      # - log: "send GET /product/{{ id }}/related"

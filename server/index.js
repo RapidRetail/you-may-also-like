@@ -2,25 +2,13 @@ require('newrelic');
 const express = require('express');
 const path = require('path');
 const db = require('../db/postgres/index.js');
-// const db = require('../db/couch-db/index.js');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const app = express();
 
-// const mongoQuery = (currentItem, res) => {
-//   db.RelatedItems.find()
-//     .then((data) => {
-//       let fourRelatedItems = [];
-//       if (currentItem < 96) {
-//         fourRelatedItems = data.slice(currentItem, currentItem + 4);
-//       } else {
-//         fourRelatedItems = data.slice(currentItem - 6, currentItem - 2);
-//       }
-//       res.send(fourRelatedItems);
-//     });
-// };
-
 app.use(cors());
+app.use(bodyParser.json());
 
 app.use('/', express.static(path.join(__dirname, '../public/')));
 app.use('/product/:productId', express.static(path.join(__dirname, '../public/')));
@@ -30,7 +18,7 @@ app.get('/product/:productId/related', (req, res) => {
 
   db.getRelatedItems(productId, (err, data) => {
     if (err) {
-      res.send(err);
+      res.status(500).send(err);
     } else {
       res.header('Access-Control-Allow-Origin', '*');
       res.status(200).send(data);
@@ -38,24 +26,11 @@ app.get('/product/:productId/related', (req, res) => {
   });
 });
 
-// accepts /related?title=title&price=45&main_img=link
-//   &hov_img=link&colors=[blue,blue,blue,blue]&related=[1,2,3,4]
-app.post('/related', (req, res) => {
-  const colors = req.query.colors.substring(1, req.query.colors.length - 1).split(',');
-  const related = req.query.related.substring(1, req.query.related.length - 1).split(',').map(id => parseInt(id, 10));
-
-  const item = {
-    title: req.query.title,
-    price: req.query.price,
-    main_img: req.query.main_img,
-    hov_img: req.query.hov_img,
-    colors,
-    related
-  };
-
-  db.insertItem(item, (err, data) => {
+// accepts json body containing data
+app.post('/product', (req, res) => {
+  db.insertItem(req.body, (err, data) => {
     if (err) {
-      res.send(err);
+      res.status(500).send(err);
     } else {
       res.header('Access-Control-Allow-Origin', '*');
       res.status(201).send(data);
