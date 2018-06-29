@@ -1,6 +1,12 @@
 const { Client } = require('pg');
 
-const client = new Client();
+const client = new Client({
+  database: 'ec2-user',
+  host: '54.153.1.26',
+  user: 'power_user',
+  password: 'power',
+  port: '5432'
+});
 client.connect();
 
 const getRandomInt = (min, max) => Math.floor(Math.random() * ((max - min) + 1)) + min;
@@ -16,11 +22,11 @@ module.exports.getRelatedItems = (productId, callback) => {
     GROUP BY 1,2,3,4,5;
   `;
 
-  const getRelatedItemsMatViewQuery = `
-    SELECT *
-    FROM related_products 
-    WHERE product_id = ${productId}
-  ;`;
+  // const getRelatedItemsMatViewQuery = `
+  //   SELECT *
+  //   FROM related_products 
+  //   WHERE product_id = ${productId}
+  // ;`;
 
   const sendData = (res) => {
     const data = res.rows.map(row => (
@@ -37,17 +43,17 @@ module.exports.getRelatedItems = (productId, callback) => {
     callback(null, data);
   };
 
-  client.query(getRelatedItemsMatViewQuery, (err, res) => {
+  client.query(getRelatedItemsQuery, (err, res) => {
     if (err) {
       callback(err);
-    } else if (res.rows.length === 0) {
-      client.query(getRelatedItemsQuery, (err, res) => {
-        if (err) {
-          callback(err);
-        } else {
-          sendData(res);
-        }
-      });
+    // } else if (res.rows.length === 0) {
+    //   client.query(getRelatedItemsQuery, (err, res) => {
+    //     if (err) {
+    //       callback(err);
+    //     } else {
+    //       sendData(res);
+    //     }
+    //   });
     } else {
       sendData(res);
     }
