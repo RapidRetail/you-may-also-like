@@ -22,11 +22,11 @@ module.exports.getRelatedItems = (productId, callback) => {
     GROUP BY 1,2,3,4,5;
   `;
 
-  // const getRelatedItemsMatViewQuery = `
-  //   SELECT *
-  //   FROM related_products 
-  //   WHERE product_id = ${productId}
-  // ;`;
+  const getRelatedItemsMatViewQuery = `
+    SELECT related_product_id, title, main_img, hov_img, price, colors
+    FROM related_products 
+    WHERE product_id = ${productId}
+  ;`;
 
   const sendData = (res) => {
     const data = res.rows.map(row => (
@@ -43,17 +43,17 @@ module.exports.getRelatedItems = (productId, callback) => {
     callback(null, data);
   };
 
-  client.query(getRelatedItemsQuery, (err, res) => {
+  client.query(getRelatedItemsMatViewQuery, (err, res) => {
     if (err) {
       callback(err);
-    // } else if (res.rows.length === 0) {
-    //   client.query(getRelatedItemsQuery, (err, res) => {
-    //     if (err) {
-    //       callback(err);
-    //     } else {
-    //       sendData(res);
-    //     }
-    //   });
+    } else if (res.rows.length === 0) {
+      client.query(getRelatedItemsQuery, (err, res) => {
+        if (err) {
+          callback(err);
+        } else {
+          sendData(res);
+        }
+      });
     } else {
       sendData(res);
     }
