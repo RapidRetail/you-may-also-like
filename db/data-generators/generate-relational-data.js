@@ -2,7 +2,7 @@
 // use the postgres loader files to load the csv into a db
 const fs = require('fs');
 const colorList = require('./colors.js');
-const titleWords = require('.title-words.js');
+const titleWords = require('./title-words.js');
 
 const getRandomInt = (min, max) => Math.floor(Math.random() * ((max - min) + 1)) + min;
 
