@@ -1,13 +1,16 @@
-const { Client } = require('pg');
+// const { Client } = require('pg');
+const { Pool } = require('pg');
 
-const client = new Client({
+const client = new Pool({
   database: 'ec2-user',
   host: process.env.HOST,
   user: 'power_user',
   password: 'power',
-  port: '5432'
+  port: '5432',
+  max: 20
 });
-client.connect();
+
+// client.connect();
 
 const getRandomInt = (min, max) => Math.floor(Math.random() * ((max - min) + 1)) + min;
 
