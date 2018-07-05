@@ -2,10 +2,10 @@
 const { Pool } = require('pg');
 
 const client = new Pool({
-  database: 'ec2-user',
-  host: process.env.HOST,
-  user: 'power_user',
-  password: 'power',
+  database: process.env.PGDATABASE,
+  host: process.env.PGHOST,
+  user: process.env.PGUSER,
+  password: process.env.PGPASSWORD,
   port: '5432',
   max: 20
 });
