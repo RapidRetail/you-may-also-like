@@ -1,7 +1,16 @@
-const { Client } = require('pg');
+// const { Client } = require('pg');
+const { Pool } = require('pg');
 
-const client = new Client();
-client.connect();
+const client = new Pool({
+  database: process.env.PGDATABASE,
+  host: process.env.PGHOST,
+  user: process.env.PGUSER,
+  password: process.env.PGPASSWORD,
+  port: '5432',
+  max: 20
+});
+
+// client.connect();
 
 const getRandomInt = (min, max) => Math.floor(Math.random() * ((max - min) + 1)) + min;
 
@@ -17,7 +26,7 @@ module.exports.getRelatedItems = (productId, callback) => {
   `;
 
   const getRelatedItemsMatViewQuery = `
-    SELECT *
+    SELECT related_product_id, title, main_img, hov_img, price, colors
     FROM related_products 
     WHERE product_id = ${productId}
   ;`;
