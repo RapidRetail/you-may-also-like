@@ -1,6 +1,8 @@
-# Project Recommendations Back-end
+# "You May Also Like" Microservice Backend
 
-> This project builds a webscale backend for a pre-existing product recommendation carosel.
+This project builds a webscale backend for a pre-existing product recommendation carousel.
+
+![](module.png)
 
 ## Related Projects
 
